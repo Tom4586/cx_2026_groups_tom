@@ -1,0 +1,8 @@
+/* Verso 4.35's literate dark theme changes the backgrounds but leaves
+   --verso-code-color black. Keep Lean tokens readable in code and proof states.
+   Recheck this workaround after upgrading Verso; see project_maintenance.md. */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --verso-code-color: var(--verso-text-color);
+    }
+}

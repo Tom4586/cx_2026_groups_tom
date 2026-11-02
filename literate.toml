@@ -1,5 +1,6 @@
 landing_page = "Cx2026Groups"
 hide_commands = ["import", "#min_imports"]
+extra_css = ["course.css"]
 
 [[targets]]
 library = "Cx2026Groups"
