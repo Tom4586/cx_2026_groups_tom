@@ -1,5 +1,5 @@
 landing_page = "Cx2026Groups"
-hide_commands = ["import", "#min_imports"]
+hide_commands = ["import", "#min_imports", "set_option"]
 extra_css = ["course.css"]
 
 [[targets]]
@@ -13,7 +13,7 @@ description = "Curriculum X 2026–27: interactive course notes and Lean proofs.
 title = "Course overview"
 
 [modules."Cx2026Groups.Week1"]
-title = "Week 1: Introduction to interactive theorem proving"
+title = "Week 1: Rewriting and calculating"
 
 [order_children]
 "Cx2026Groups" = ["Cx2026Groups.Week1"]
