@@ -18,5 +18,8 @@ title = "Week 1.1: Rewriting"
 [modules."Cx2026Groups.Week1_2"]
 title = "Week 1.2: Calculation-style proofs"
 
+[modules."Cx2026Groups.Week1_3"]
+title = "Week 1.3: Introducing hypotheses with have"
+
 [order_children]
-"Cx2026Groups" = ["Cx2026Groups.Week1_1", "Cx2026Groups.Week1_2"]
+"Cx2026Groups" = ["Cx2026Groups.Week1_1", "Cx2026Groups.Week1_2",  "Cx2026Groups.Week1_3"]

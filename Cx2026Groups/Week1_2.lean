@@ -23,6 +23,8 @@ to do this in Lean.
 
 set_option linter.unusedTactic false
 
+variable (x y z : ℤ)
+
 /-!
 Suppose we have the hypotheses `h1 : x = 5 * y` and `h2 : y = 2` and we wish to prove `3 * x - 4 * y
 = 22`. In traditional mathematics, we might write this as:
@@ -37,8 +39,6 @@ Though you might not typically give a justification of each line in a handwritte
 
 Here is the same proof written as a Lean {tactic}`calc` block.
 -/
-
-variable (x y z : ℤ)
 
 example (h1 : x = 5 * y) (h2 : y = 2) : 3 * x - 4 * y = 22 := by
   calc

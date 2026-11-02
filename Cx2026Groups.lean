@@ -1,5 +1,6 @@
 import Cx2026Groups.Week1_1
 import Cx2026Groups.Week1_2
+import Cx2026Groups.Week1_3
 
 /-!
 # Leaning into Group Theory
