@@ -1,4 +1,5 @@
-import Cx2026Groups.Week1
+import Cx2026Groups.Week1_1
+import Cx2026Groups.Week1_2
 
 /-!
 # Leaning into Group Theory
