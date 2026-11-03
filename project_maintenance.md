@@ -19,8 +19,8 @@ Write course explanations in module comments (`/-! ... -/`) alongside the Lean
 code in `Cx2026Groups/`. Import each new week in `Cx2026Groups.lean` so it is
 included in the course library and website. The overview in `Cx2026Groups.lean`
 is the home page. Edit `literate.toml` to set page titles and navigation order;
-new course modules are included automatically. Only the course library is
-published, so Mathlib and Lean dependency sources are not rendered as course pages.
+new course modules are included automatically. Only the student course library is
+published, so teacher files, Mathlib, and Lean dependency sources are not rendered as course pages.
 See the [Verso literate programming guide](https://verso.lean-lang.org/doc/latest/)
 for additional rendering options.
 
@@ -31,6 +31,60 @@ GitHub Actions builds the library and website on pushes and pull requests.
 Pushes to the default branch also publish `.lake/build/literate-html` to
 GitHub Pages. Set **Settings → Pages → Build and deployment → Source** to
 **GitHub Actions** when enabling Pages for the repository.
+
+## Student and teacher versions
+
+Student lessons live in `Cx2026Groups/`; matching teacher lessons live in
+`Cx2026GroupsTeacher/`. They started as identical copies. Edit teacher files as
+your authoring originals, then manually copy and adapt lessons for students.
+The overview files import their own library's lessons. When adding a lesson,
+add its import to the corresponding overview and set its title and navigation
+order in the rendering configurations. Keep student files independent of teacher
+imports. If both versions define named declarations that might be imported
+together, use distinct namespaces for those declarations.
+
+`lakefile.toml` registers both libraries, but the default target remains the
+student library. To check the teacher files explicitly:
+
+```sh
+lake build Cx2026GroupsTeacher
+```
+
+CI checks both libraries. The public website still uses `literate.toml`, which
+selects only `Cx2026Groups`, and is built with `lake build :literateHtml`.
+Teacher files retain their Verso markup and options so they can also be rendered.
+Files committed to a public repository are accessible there even if they are
+excluded from the public website.
+
+To render both libraries together locally:
+
+```sh
+python3 scripts/build_teacher_site.py
+python3 -m http.server 8001 --bind 127.0.0.1 --directory .lake/build/literate-html-teacher
+```
+
+Open <http://localhost:8001>. `literate-teacher.toml` selects both libraries,
+with separate Student notes and Teacher notes navigation branches. Update its
+titles and ordering alongside `literate.toml` when adding lessons. The preview
+server can remain running while you rebuild; refresh the browser afterwards.
+
+The pinned Verso package facet hardcodes `literate.toml` and its output path.
+Our Python helper instead calls the pinned planner, builds the planned modules'
+`literate` facets, and invokes the HTML renderer with the combined configuration.
+It discovers source files under the two standard library roots. It renders to a
+temporary directory and replaces `.lake/build/literate-html-teacher` only after
+success, clearing obsolete pages. It does not change the student configuration
+or the public site's output. No dependency sources are patched.
+
+Codespaces setup continues to fetch only student imports. If teacher files gain
+additional Mathlib imports, optionally fetch their cached artifacts before building:
+
+```sh
+python3 .devcontainer/fetch_mathlib_cache.py --teacher
+```
+
+When upgrading Verso, check both site commands: the helper relies on the pinned
+planner/renderer command interfaces and module-map format.
 
 ## Temporary Verso backport
 

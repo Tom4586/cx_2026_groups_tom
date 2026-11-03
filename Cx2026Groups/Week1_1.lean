@@ -8,7 +8,6 @@ module
 
 import Mathlib.Algebra.Group.Int.Defs
 import Mathlib.Tactic.NormNum.Core
-import Mathlib.Tactic.Linter.MinImports
 
 set_option doc.verso.module true
 set_option doc.verso.suggestions false
@@ -19,8 +18,6 @@ set_option doc.verso.suggestions false
 In this file, you will learn how to use the {tactic}`rw` (rewrite) tactic to change the target of a
 proof goal.
 -/
-
-#import_bumps
 
 set_option linter.unusedTactic false
 
@@ -108,7 +105,7 @@ example (h1 : x + y = z) (h2 : x + y = 7) : z + 2 = 9 := by
 Use a backwards rewrite, followed by a forwards rewrite and `norm_num`.
 -/
 
-example (h1 : x + y = z) (h2 : x + y = 6) : 2 * z = 12 := by
+example (h1 : x + y = 6) (h2 : x + y = z) : 2 * z = 12 := by
   sorry
   done
 

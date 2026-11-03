@@ -22,6 +22,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: leanprover/lean-action@v1
+      - name: Check teacher library
+        run: lake build Cx2026GroupsTeacher
       - name: Build Verso course website
         run: lake build :literateHtml
       - uses: actions/upload-pages-artifact@v3

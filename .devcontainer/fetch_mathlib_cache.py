@@ -1,12 +1,18 @@
 """Fetch only the Mathlib modules imported by the course, including dependencies."""
 
 from pathlib import Path
+import argparse
 import re
 import subprocess
 
 
 root = Path(__file__).resolve().parent.parent
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--teacher", action="store_true", help="also fetch teacher-only imports")
+args = parser.parse_args()
 sources = [root / "Cx2026Groups.lean", *sorted((root / "Cx2026Groups").rglob("*.lean"))]
+if args.teacher:
+    sources += [root / "Cx2026GroupsTeacher.lean", *sorted((root / "Cx2026GroupsTeacher").rglob("*.lean"))]
 imports = set()
 for source in sources:
     imports.update(
