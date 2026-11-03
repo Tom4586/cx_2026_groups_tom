@@ -87,7 +87,57 @@ next time to retain your files and installed dependencies. Codespaces uses your
 account's compute and storage allowance; check GitHub's usage settings. Commit
 and push work you want to keep before deleting a codespace.
 
+## Get new course files
+
+Your lecturer will add files to the course repository during the course. Your
+fork and your existing codespace do not receive these updates automatically.
+There are two steps: update your fork from the course repository, then pull
+those updates into your codespace.
+
+1. In your codespace, save your exercise work, then use **Source Control** to
+   stage, commit, and push your changes to your fork. Make sure you have no
+   uncommitted changes before continuing.
+2. In a browser, open **your fork** on GitHub and select the `main` branch.
+   Select **Sync fork → Update branch** to bring in the lecturer's changes.
+   See [GitHub's guide to syncing a fork](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/syncing-a-fork).
+3. Return to your codespace, making sure you are also working on `main`.
+   Press **F1**, search for **Git: Pull**, and select it. This downloads and
+   merges the changes from your fork. The new files appear in the Explorer;
+   the repository folder is already available inside the container.
+4. In the terminal, check the updated course:
+
+```
+lake build
+```
+
+If you are using a different branch for your work, the updates must also be
+merged into that branch. The steps above assume you work on `main`.
+
+New Lean files do not require a container rebuild. If the lecturer changes the
+project's dependencies, run `bash .devcontainer/setup.sh` after pulling. If the
+files in `.devcontainer` change, run **Codespaces: Rebuild Container** from the
+command palette and wait for setup to finish. In a local VS Code container,
+use **Dev Containers: Rebuild Container** instead.
+
+Adding a new weekly file will usually merge cleanly. If both you and the lecturer
+have changed the same lines in an existing file, Git may report a merge conflict.
+Resolve the conflict by combining the course updates with your solutions, then
+commit and push the result. If GitHub cannot sync your fork automatically, follow
+its instructions for resolving the conflicts in a pull request or ask your
+lecturer for help. Avoid **Discard changes** or a force sync, which can remove
+your exercise work.
+
 ## If setup or Lean fails
+
+For a local container in VS Code, install the **Dev Containers** extension, start
+Docker, then run **Dev Containers: Reopen in Container** from the command palette.
+After changing the container configuration, use **Dev Containers: Rebuild
+Container**. The container keeps its Linux dependencies and build files in a
+Docker volume, separate from the Mac or Windows build files in your checkout.
+
+Setup prints its current step and retries failed downloads up to three times.
+An SSL or connection error while installing Lean means the download failed;
+check your internet connection and any VPN or proxy before trying again.
 
 If the initial dependency download was interrupted, rerun
 `bash .devcontainer/setup.sh` in the terminal. Read the first error if it fails
