@@ -52,4 +52,34 @@ have  h3 : 4 * y = 8 := by
 introduces a proof of `4 * y = 8` into the context and calls that proof `h3`. The proof itself
 follows the word `by`. In our case, we used `rw [h2]` to rewrite `4 * y = 8` as `4 * 2 = 8`. Then we
 use {tactic}`norm_num` to perform the arithmetic.
+
+Note I'm using the syntax `rw [h1, h2]` has the same result as doing `rw [h1]` followed by `rw
+[h2]`.
 -/
+
+/-!
+
+## Exercise 3.1
+
+* In the proof above, what happens if you replace `rw [h3, h4]` with `rw [h4, h3]`? Will the proof
+still work? Think about it before you try.
+* What if you replace `rw [h1, h2]` with `rw [h2, h1]`?
+-/
+
+/-!
+
+## Exercise 3.1
+
+Complete the proof below.
+-/
+
+example (h1 : x = 50) (h2 : y = 2 * x - 70) : 5 * y - 3 * x = 0 := by
+  have h3 : 3 * x = 150 := by
+    rw [h1]
+    norm_num
+  have h4 : 5 * y = 150 := by
+    rw [h2, h1]
+    norm_num
+  rw [h3, h4]
+  norm_num
+
