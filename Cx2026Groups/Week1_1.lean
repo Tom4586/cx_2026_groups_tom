@@ -6,6 +6,7 @@ Authors: Gihan Marasingha
 
 module
 
+import Mathlib.Algebra.Group.Int.Defs
 import Mathlib.Tactic.NormNum.Core
 import Mathlib.Tactic.Linter.MinImports
 
@@ -85,5 +86,89 @@ example (h1 : x = 3 * z) (h2 : y = 9) (h3 : z = 8 - y) : 8 * x + 4 *y + 2 * z = 
   done
 
 example (h1 : x = 3) (h2 : y = 4 * x ^ 2) : y = 36 := by
+  sorry
+  done
+
+/-!
+## Rewriting backwards
+
+Sometimes the right-hand side of an equality is the expression we want to replace. Writing
+`rw [← h]` uses the equality `h` from right to left. Type `\l` followed by a space to enter `←`.
+
+Here `h1` tells us that `x + y = z`. We replace `z` with `x + y`, then use `h2`.
+-/
+
+example (h1 : x + y = z) (h2 : x + y = 7) : z + 2 = 9 := by
+  rw [← h1, h2]
+  norm_num
+
+/-!
+## Exercise 1.3
+
+Use a backwards rewrite, followed by a forwards rewrite and `norm_num`.
+-/
+
+example (h1 : x + y = z) (h2 : x + y = 6) : 2 * z = 12 := by
+  sorry
+  done
+
+/-!
+## Associativity of addition
+
+We can rewrite using named theorems as well as hypotheses. The theorem `add_assoc x y z` states
+that `(x + y) + z = x + (y + z)`. This is the *associative law*: changing the grouping of a sum
+does not change its value. It does not change the order of the terms.
+
+Lean reads `x + y + z` as `(x + y) + z`. In contrast, parentheses in `x + (y + z)` specify a
+different grouping. To use a hypothesis about `y + z`, we may first need to regroup the sum.
+-/
+
+example (h : y + z = 4) : (x + y) + z = x + 4 := by
+  rw [add_assoc x y z]
+  rw [h]
+
+/-!
+The first rewrite changes the target to `x + (y + z) = x + 4`. Now `rw [h]` can find `y + z`.
+Why would `rw [h]` fail if we tried it before regrouping?
+
+We can also use `add_assoc` backwards to group the first two terms.
+-/
+
+example (h : x + y = 6) : x + (y + z) = 6 + z := by
+  rw [← add_assoc x y z, h]
+
+/-!
+## Exercise 1.4
+
+Use `add_assoc` to expose the sum in the hypothesis, then rewrite using that hypothesis.
+-/
+
+example (h : y + z = 9) : (x + y) + z = x + 9 := by
+  sorry
+  done
+
+example (h : x + y = 9) : x + (y + z) = 9 + z := by
+  sorry
+  done
+
+/-!
+## Exercise 1.5
+
+Combine regrouping, rewriting with both hypotheses, and arithmetic. Predict the target after
+each rewrite before checking it in the InfoView.
+-/
+
+example (h1 : x = 3) (h2 : y + z = 8) : (x + y) + z = 11 := by
+  sorry
+  done
+
+/-!
+## Exercise 1.6
+
+Reassociate a sum of four terms. You will need two uses of `add_assoc`. Give its arguments
+explicitly so that each rewrite changes the grouping you intend.
+-/
+
+example (w : ℤ) : ((w + x) + y) + z = w + (x + (y + z)) := by
   sorry
   done
