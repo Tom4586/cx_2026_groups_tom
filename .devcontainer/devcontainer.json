@@ -4,10 +4,14 @@
     "dockerfile": "Dockerfile"
   },
   "remoteUser": "vscode",
+  "mounts": [
+    "source=${devcontainerId}-lake,target=${containerWorkspaceFolder}/.lake,type=volume"
+  ],
   "hostRequirements": {
     "cpus": 4,
     "memory": "8gb"
   },
+  "onCreateCommand": "sudo chown vscode:vscode .lake",
   "postCreateCommand": "bash .devcontainer/setup.sh",
   "waitFor": "postCreateCommand",
   "customizations": {
