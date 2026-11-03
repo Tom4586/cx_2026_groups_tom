@@ -2,6 +2,8 @@ import Cx2026Groups.Week1_1
 import Cx2026Groups.Week1_2
 import Cx2026Groups.Week1_3
 
+set_option doc.verso.module true
+
 /-!
 # Leaning into Group Theory
 
@@ -26,22 +28,22 @@ By the end of this project, you will be able to:
 * Identify the goals, target and hypotheses at every stage of a proof, whether traditional or Lean
   style.
 * Prove results in group theory using chains of equations with each equation justified by the
-  application of a rule. Represent such a proof in Lean using the `calc` tactic.
+  application of a rule. Represent such a proof in Lean using the {tactic}`calc` tactic.
 * Distinguish between forward and backward reasoning and to describe whether a given proof technique
   operates in a forwards or backwards direction.
 * Use Lean tactics to modify proof goals. Explain the effect of Lean tactics on proof goals. These
   tactics include
-    * The `rewrite` (or `rw` for short) tactic for rewriting a target or hypothesis using a
-      theorem.
-    * The `apply` tactic for applying a theorem or hypothesis in a situation where its conclusion
-      matches the target.
-    * The `simp` tactic for automatically applying rewrite rules.
-    * The `show` tactic to re-express the target in a definitionally equivalent form.
-    * The `change` tactic to re-express a hypothesis or the target in a definitionally equivalent
-      form.
-    * The `have` tactic to prove a statement and add it to the list of hypotheses.
-    * The `intro` tactic to introduce a hypothesis or variable when the target is an implication or
-      a universally-quantified statement.
-    * The `rcases` tactic to (recursively) deconstruct a hypothesis or term.
-    * The `use` tactic to specify the witness in the proof of an existentially-quantified statement.
+    * The {tactic}`rw` tactic for rewriting a target or hypothesis using a theorem.
+    * The {tactic}`apply` tactic for applying a theorem or hypothesis in a situation where its
+    conclusion matches the target.
+    * The {tactic}`simp` tactic for automatically applying rewrite rules.
+    * The {tactic}`show` tactic to re-express the target in a definitionally equivalent form.
+    * The {tactic}`change` tactic to re-express a hypothesis or the target in a definitionally
+    equivalent form.
+    * The {tactic}`have` tactic to prove a statement and add it to the list of hypotheses.
+    * The {tactic}`intro` tactic to introduce a hypothesis or variable when the target is an
+    implication or a universally-quantified statement.
+    * The {tactic}`rcases` tactic to (recursively) deconstruct a hypothesis or term.
+    * The {tactic}`use` tactic to specify the witness in the proof of an existentially-quantified
+    statement.
 -/
