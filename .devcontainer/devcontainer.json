@@ -1,0 +1,28 @@
+{
+  "name": "Leaning into Group Theory",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "vscode",
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb"
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "waitFor": "postCreateCommand",
+  "customizations": {
+    "vscode": {
+      "extensions": ["leanprover.lean4"]
+    },
+    "codespaces": {
+      "openFiles": ["Cx2026Groups/Week1_0.lean"]
+    }
+  },
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "Course website",
+      "onAutoForward": "notify"
+    }
+  }
+}

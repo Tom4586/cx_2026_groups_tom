@@ -5,6 +5,17 @@ This project is designed for students taking the Curriculum X course, _Leaning i
 Through this project, you will learn about the interactive theorem prover Lean and how to use it to
 prove results in Group Theory. 
 
+## Run in GitHub Codespaces
+
+Open this repository (or your own fork), select **Code → Codespaces → Create
+codespace**, and wait for setup to finish. The container installs Lean and the
+Lean VS Code extension, downloads Mathlib's precompiled artifacts, and runs
+`lake build` using the project's pinned dependencies.
+
+Start with [Week 1.0: Getting started with Codespaces](Cx2026Groups/Week1_0.lean)
+for instructions on checking proofs, working on exercises, previewing the course
+website, and saving your work.
+
 ## Intended Learning Outcomes
 
 By the end of this project, you will be able to:
