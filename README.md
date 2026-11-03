@@ -9,7 +9,8 @@ prove results in Group Theory.
 
 Open this repository (or your own fork), select **Code → Codespaces → Create
 codespace**, and wait for setup to finish. The container installs Lean and the
-Lean VS Code extension, downloads Mathlib's precompiled artifacts, and runs
+Lean VS Code extension, downloads precompiled artifacts for the Mathlib modules
+imported by the course, and runs
 `lake build` using the project's pinned dependencies.
 
 Start with [Week 1.0: Getting started with Codespaces](Cx2026Groups/Week1_0.lean)

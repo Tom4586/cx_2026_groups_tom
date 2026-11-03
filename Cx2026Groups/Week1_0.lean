@@ -20,8 +20,9 @@ installs Lean and its dependencies for you.
    on main** (or the branch you are using). The configuration requests a machine
    with at least four cores and 8 GB of memory.
 3. Wait for setup to finish. The first start downloads the Lean version specified
-   in `lean-toolchain`, fetches the precompiled Mathlib library, and builds the
-   course. This can take several minutes. Leave setup running until it completes.
+   in `lean-toolchain`, fetches the precompiled Mathlib modules used by the course,
+   and builds the course. This can take several minutes. Leave setup running
+   until it completes.
 4. The browser opens VS Code with the Lean extension installed. This file,
    `Cx2026Groups/Week1_0.lean`, opens automatically.
 
@@ -138,6 +139,14 @@ Docker volume, separate from the Mac or Windows build files in your checkout.
 Setup prints its current step and retries failed downloads up to three times.
 An SSL or connection error while installing Lean means the download failed;
 check your internet connection and any VPN or proxy before trying again.
+
+If the log says **No space left on device**, setup has run out of disk space.
+Make sure you have pulled the latest course configuration: setup downloads only
+the Mathlib modules imported by the course to limit disk use. Save, commit, and
+push your exercise work, then run **Codespaces: Rebuild Container** and choose
+**Full Rebuild** in the confirmation dialog to clear the old container's files
+and rerun setup. A full rebuild clears Docker volumes,
+including the course's compiled dependencies, which setup downloads again.
 
 If the initial dependency download was interrupted, rerun
 `bash .devcontainer/setup.sh` in the terminal. Read the first error if it fails

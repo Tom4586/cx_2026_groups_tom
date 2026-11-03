@@ -14,16 +14,19 @@ retry_download() {
       sleep 5
     fi
   done
-  echo "Setup failed. Check the network connection, then rerun: bash .devcontainer/setup.sh" >&2
+  echo "Setup failed. Read the error above; check disk space for 'No space left on device', or the connection for network errors." >&2
+  echo "After fixing the problem, rerun: bash .devcontainer/setup.sh" >&2
   return 1
 }
 
 # Lake uses lean-toolchain and lake-manifest.json from this checkout.
-# Fetch precompiled Mathlib artifacts before building the course.
+# Keep downloaded archives on the workspace's Linux build volume.
+export MATHLIB_CACHE_DIR="$PWD/.lake/mathlib-cache"
+# Fetch only the course's imports, rather than the entire Mathlib library.
 echo "Installing the project's Lean toolchain..."
 retry_download elan toolchain install "$(tr -d '\r\n' < lean-toolchain)"
 echo "Downloading Mathlib and its precompiled artifacts..."
-retry_download lake exe cache get
+retry_download python3 .devcontainer/fetch_mathlib_cache.py
 echo "Checking the course..."
 lake build
 echo "Setup complete. Open Cx2026Groups/Week1_0.lean to get started."
