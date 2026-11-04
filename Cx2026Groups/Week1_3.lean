@@ -145,8 +145,6 @@ example (h1 : x + y = 5) (h2 : z = 2) : (x + (y + z)) + z = 9 := by
 /-!
 ## Exercise 3.5
 
-Choose names and statements for two auxiliary facts: one giving the value of `x + y`, and one
-giving the value of `z + w`. Use those facts in a `calc` proof, regrouping with `add_assoc` first.
 -/
 
 example (w : ℤ) (h1 : x = 2) (h2 : y = 3) (h3 : z = 4) (h4 : w = 5) :
@@ -157,8 +155,7 @@ example (w : ℤ) (h1 : x = 2) (h2 : y = 3) (h3 : z = 4) (h4 : w = 5) :
 /-!
 ## Exercise 3.6
 
-Combine all three techniques. Prove `h3` using a backwards rewrite with `h1`, followed by
-`add_assoc` and `h2`. Then write a `calc` proof of the main target using `h3` twice.
+You may need a backward rewrite in the following.
 -/
 
 example (w : ℤ) (h1 : x + y = z) (h2 : y + w = 4) :

@@ -127,8 +127,7 @@ example (h1 : x = 5) (h2 : y + z = 7) : (x + y) + z = 12 := by
 /-!
 ## Exercise 2.6
 
-Write your own `calc` proof. Use a backwards rewrite with `h1` to replace `z` with `x + y`.
-Then use `add_assoc` to expose the sum in `h2`.
+Write your own `calc` proof.
 -/
 
 example (w : ℤ) (h1 : x + y = z) (h2 : y + w = 4) : z + w = x + 4 := by

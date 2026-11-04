@@ -77,10 +77,13 @@ Complete the proof below.
 
 example (h1 : x = 50) (h2 : y = 2 * x - 70) : 5 * y - 3 * x = 0 := by
   have h3 : 3 * x = 150 := by
-    sorry
+    rw [h1]  
+    norm_num
   have h4 : 5 * y = 150 := by
-    sorry
-  sorry
+    rw [h2, h1]
+    norm_num
+  rw [h3, h4]
+  norm_num
   done
 
 /-!
@@ -108,8 +111,9 @@ Complete the auxiliary fact, then use `add_assoc` and `h3` to finish the main pr
 
 example (h1 : y = 4) (h2 : z = 5) : (x + y) + z = x + 9 := by
   have h3 : y + z = 9 := by
-    sorry
-  sorry
+    rw [h1, h2]
+    norm_num
+  rw [add_assoc, h3]
   done
 
 /-!
@@ -138,12 +142,12 @@ Complete both calculations. The first proves a fact that the second can reuse.
 example (h1 : x + y = 5) (h2 : z = 2) : (x + (y + z)) + z = 9 := by
   have h3 : x + (y + z) = 7 := by
     calc
-      x + (y + z) = (x + y) + z := by sorry
-      _ = 5 + z := by sorry
-      _ = 7 := by sorry
+      x + (y + z) = (x + y) + z := by rw [add_assoc]
+      _ = 5 + z := by rw [h1]
+      _ = 7 := by rw [h2]; norm_num
   calc
-    (x + (y + z)) + z = 7 + z := by sorry
-    _ = 9 := by sorry
+    (x + (y + z)) + z = 7 + z := by rw [h3]
+    _ = 9 := by rw [h2]; norm_num
 
 /-!
 ## Exercise 3.5
@@ -154,20 +158,21 @@ giving the value of `z + w`. Use those facts in a `calc` proof, regrouping with 
 
 example (w : ℤ) (h1 : x = 2) (h2 : y = 3) (h3 : z = 4) (h4 : w = 5) :
     ((x + y) + z) + w = 14 := by
-  sorry
+  rw [h1, h2, h3, h4]
+  norm_num
   done
 
 /-!
 ## Exercise 3.6
 
-Combine all three techniques. Prove `h3` using a backwards rewrite with `h1`, followed by
-`add_assoc` and `h2`. Then write a `calc` proof of the main target using `h3` twice.
+You may need a backward rewrite in the following.
+
 -/
 
 example (w : ℤ) (h1 : x + y = z) (h2 : y + w = 4) :
     (z + w) + (z + w) = (x + 4) + (x + 4) := by
   have h3 : z + w = x + 4 := by
-    sorry
-  sorry
+    rw [←h1, add_assoc, h2]
+  rw [h3]
   done
 
