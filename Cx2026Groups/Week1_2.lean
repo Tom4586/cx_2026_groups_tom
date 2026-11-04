@@ -8,7 +8,6 @@ module
 
 import Mathlib.Algebra.Group.Int.Defs
 import Mathlib.Tactic.NormNum.Core
-import Mathlib.Tactic.Linter.MinImports
 
 set_option doc.verso.module true
 set_option doc.verso.suggestions false
@@ -19,8 +18,6 @@ set_option doc.verso.suggestions false
 Proofs can be laid out as a series of equations, each with a justification or reason. We'll see how
 to do this in Lean.
 -/
-
-#import_bumps
 
 set_option linter.unusedTactic false
 

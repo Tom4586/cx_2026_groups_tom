@@ -8,7 +8,6 @@ module
 
 import Mathlib.Algebra.Group.Int.Defs
 import Mathlib.Tactic.NormNum.Core
-import Mathlib.Tactic.Linter.MinImports
 
 set_option doc.verso.module true
 set_option doc.verso.suggestions false
@@ -24,8 +23,6 @@ prove $`3x - 4y = 22`. We can reason as follows:
 We have `h3`:$`4y = 8`, from `h2`. We have `h4`:$`3x = 30` from `h1` and `h2`. Combining `h3` and
 `h4` gives $`3x - 4y = 22`.
 -/
-
-#import_bumps
 
 set_option linter.unusedTactic false
 
