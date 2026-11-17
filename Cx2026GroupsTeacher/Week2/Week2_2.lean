@@ -1,0 +1,101 @@
+/-
+Copyright (c) 2026 Gihan Marasingha. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Gihan Marasingha
+-/
+
+module
+
+public import Cx2026GroupsTeacher.Week2.Week2_1
+public import Mathlib.GroupTheory.OrderOfElement
+meta import Cx2026GroupsTools
+meta import Cx2026GroupsAuthoring
+
+set_option doc.verso.module true
+set_option doc.verso.suggestions false
+
+/-!
+# Orders of elements
+
+Recall that if $`g` is an element of a group $`G`, then the order of $`g` (where it is defined) is
+the smallest positive integer $`n` such that $`g ^ n = 1` (where I use $`1` to denote the identity
+element in the group).
+
+In Mathlib, if there is no positive integer $`n` such that $`g ^ n = 1`, then the order of $`n` is
+defined to be $`0`.
+
+The order of `g` is denoted `orderOf g` in Mathlib.
+-/
+
+namespace cx_2026
+
+variable {G : Type*} [Group G] {x y z : G}
+
+/-!
+For example, the order of the identity element is $`1`. This result is called {name}`orderOf_one` in
+Mathlib.
+-/
+
+example : orderOf 1 = 1 := by
+  rw [orderOf_one]
+
+
+/-!
+
+
+-/
+
+public section
+
+NewTactic intro rcases
+
+set_option course.checkProofs true
+
+/-!
+## Exercise 2.1
+In a group, if `z * x = z * y`, then `x = y`. This is called left cancellation. We'll prove this
+using the {tactic}`calc`. You may find it helpful to use {name}`inv_mul_cancel_left`, the result
+that `g⁻¹ * (g * h) = h`. This will help in the first step of your calculation.
+
+Remember {name}`inv_mul_cancel`, the result that `g⁻¹ * g = 1`.
+-/
+
+lemma mul_left_cancel (h : z * x = z * y) : x = y := by
+  calc x = sorry := by sorry
+    _ = y := by sorry
+  done
+
+NewTheorem cx_2026.mul_left_cancel
+
+teacher_only in
+example (h : z * x = z * y) : x = y := by
+  calc
+    x = z⁻¹ * (z * x) := by rw [inv_mul_cancel_left] 
+    _ = z⁻¹ * (z * y) := by rw [h]
+    _ = (z⁻¹ * z) * y := by rw [mul_assoc]
+    _ =  1 * y := by rw [inv_mul_cancel]
+    _ = y := by rw [one_mul]
+  done
+
+/-!
+## Exercise 2.2
+
+Now prove the corresponding result that if `x * z = y * z`, then `x = y`.
+-/
+
+lemma mul_right_cancel (h : x * z = y * z) : x = y := by
+  calc x = sorry := by sorry
+  _ = y := sorry
+
+NewTheorem cx_2026.mul_right_cancel
+
+teacher_only in
+example (h : x * z = y * z) : x = y := by
+  calc
+    x = (x * z) * z⁻¹ := by rw [mul_inv_cancel_right]
+    _ = (y * z) * z⁻¹ := by rw [h]
+    _ = y := by rw [mul_inv_cancel_right]
+
+end
+
+end cx_2026

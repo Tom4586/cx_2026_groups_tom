@@ -1,0 +1,92 @@
+/-
+Copyright (c) 2026 Gihan Marasingha. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Gihan Marasingha
+-/
+
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Cx2026GroupsTeacher.Week4.Week4_0
+meta import Cx2026GroupsAuthoring
+
+set_option doc.verso.module true
+set_option doc.verso.suggestions false
+
+/-!
+# All left cosets have the same size
+
+Translate each $`h\in H` to $`gh\in gH`. For each $`y\in gH`, the membership
+criterion says that $`g^{-1}y\in H`. This gives a map in the other direction.
+The two translation identities from Week 2 show that the maps undo each other.
+
+## Elements with membership proofs
+
+Lean can treat `H` as a type. An element of that type consists of an element
+of `G` and a proof that it belongs to `H`. A set such as `g • (H : Set G)` can
+also be treated as a type. In both cases, `x.val` is the underlying element of
+`G` and `x.property` is its membership proof. Such a type is called a subtype.
+
+The following definitions give the two maps. In `⟨value, proof⟩`, the first entry
+is the underlying element and the second shows that it belongs to the target.
+-/
+
+open scoped Pointwise
+
+namespace cx_2026
+
+variable {G : Type*} [Group G] (H : Subgroup G) (g : G)
+
+private def translate (x : H) : (g • (H : Set G) : Set G) :=
+  ⟨g * x.val, mem_leftCoset g x.property⟩
+
+private def translateBack (y : (g • (H : Set G) : Set G)) : H :=
+  ⟨g⁻¹ * y.val, (left_coset_membership H g y.val).mp y.property⟩
+
+/-!
+## Exercise 1.1
+
+Verify that the maps undo each other. `apply Subtype.ext` reduces equality of
+subtype elements to equality of their underlying values. Use `change` to write
+out the compositions as products in `G`.
+-/
+
+example (x : H) : translateBack H g (translate H g x) = x := by
+  apply Subtype.ext
+  change g⁻¹ * (g * x.val) = x.val
+  sorry
+
+teacher_only in
+example (x : H) : translateBack H g (translate H g x) = x := by
+  apply Subtype.ext
+  change g⁻¹ * (g * x.val) = x.val
+  exact inv_mul_cancel_left g x.val
+
+example (y : (g • (H : Set G) : Set G)) : translate H g (translateBack H g y) = y := by
+  apply Subtype.ext
+  sorry
+
+teacher_only in
+example (y : (g • (H : Set G) : Set G)) : translate H g (translateBack H g y) = y := by
+  apply Subtype.ext
+  change g * (g⁻¹ * y.val) = y.val
+  exact mul_inv_cancel_left g y.val
+
+/-!
+## Exercise 1.2
+
+Lean writes `A ≃ B` for a bijection with a specified inverse.
+{name}`Subgroup.leftCosetEquivSubgroup` packages the maps above as a bijection
+from the coset to `H`. For a finite type `A`, `Nat.card A` counts its elements.
+Use {name}`Nat.card_congr` to deduce that a left coset and its subgroup have
+the same cardinality.
+-/
+
+public lemma left_coset_card : Nat.card (g • (H : Set G) : Set G) = Nat.card H := by
+  sorry
+
+teacher_only in
+example : Nat.card (g • (H : Set G) : Set G) = Nat.card H := by
+  exact Nat.card_congr (Subgroup.leftCosetEquivSubgroup g)
+
+end cx_2026

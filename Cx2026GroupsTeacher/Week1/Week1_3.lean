@@ -8,6 +8,8 @@ module
 
 import Mathlib.Algebra.Group.Int.Defs
 import Mathlib.Tactic.NormNum.Core
+import Mathlib.Tactic.Linter.MinImports
+meta import Cx2026GroupsAuthoring
 
 set_option doc.verso.module true
 set_option doc.verso.suggestions false
@@ -24,12 +26,15 @@ We have `h3`:$`4y = 8`, from `h2`. We have `h4`:$`3x = 30` from `h1` and `h2`. C
 `h4` gives $`3x - 4y = 22`.
 -/
 
+teacher_only in 
+#import_bumps
+
 set_option linter.unusedTactic false
 
 variable (x y z : ℤ)
 
 /-!
-The same proof can be written in Lean as follows. The {tactic}`have` tactic is explained below.
+The same proof can be written in Lean as follows. The {tactic}`have` tactic is explained below. 
 -/
 
 example (h1 : x = 5 * y) (h2 : y = 2) : 3 * x - 4 * y = 22 := by
@@ -74,12 +79,21 @@ Complete the proof below.
 
 example (h1 : x = 50) (h2 : y = 2 * x - 70) : 5 * y - 3 * x = 0 := by
   have h3 : 3 * x = 150 := by
-    rw[h1]
+    sorry
+  have h4 : 5 * y = 150 := by
+    sorry
+  sorry
+  done
+
+teacher_only in
+example (h1 : x = 50) (h2 : y = 2 * x - 70) : 5 * y - 3 * x = 0 := by
+  have h3 : 3 * x = 150 := by
+    rw [h1]
     norm_num
   have h4 : 5 * y = 150 := by
-    rw[h2,h1]
+    rw [h2, h1]
     norm_num
-  rw[h3,h4]
+  rw [h3, h4]
   norm_num
   done
 
@@ -108,8 +122,16 @@ Complete the auxiliary fact, then use `add_assoc` and `h3` to finish the main pr
 
 example (h1 : y = 4) (h2 : z = 5) : (x + y) + z = x + 9 := by
   have h3 : y + z = 9 := by
-    rw[h1,h2]
-  rw[add_assoc]
+    sorry
+  sorry
+  done
+
+teacher_only in
+example (h1 : y = 4) (h2 : z = 5) : (x + y) + z = x + 9 := by
+  have h3 : y + z = 9 := by
+    rw [h1, h2]
+    norm_num
+  rw [add_assoc, h3]
   done
 
 /-!
@@ -145,6 +167,17 @@ example (h1 : x + y = 5) (h2 : z = 2) : (x + (y + z)) + z = 9 := by
     (x + (y + z)) + z = 7 + z := by sorry
     _ = 9 := by sorry
 
+teacher_only in
+example (h1 : x + y = 5) (h2 : z = 2) : (x + (y + z)) + z = 9 := by
+  have h3 : x + (y + z) = 7 := by
+    calc
+      x + (y + z) = (x + y) + z := by rw [add_assoc]
+      _ = 5 + z := by rw [h1]
+      _ = 7 := by rw [h2]; norm_num
+  calc
+    (x + (y + z)) + z = 7 + z := by rw [h3]
+    _ = 9 := by rw [h2]; norm_num
+
 /-!
 ## Exercise 3.5
 
@@ -153,6 +186,16 @@ example (h1 : x + y = 5) (h2 : z = 2) : (x + (y + z)) + z = 9 := by
 example (w : ℤ) (h1 : x = 2) (h2 : y = 3) (h3 : z = 4) (h4 : w = 5) :
     ((x + y) + z) + w = 14 := by
   sorry
+  done
+
+teacher_only in
+-- Choose names and statements for two auxiliary facts: one giving the value of `x + y`,
+-- and one giving the value of `z + w`. Use those facts in a `calc` proof,
+-- regrouping with `add_assoc` first.
+example (w : ℤ) (h1 : x = 2) (h2 : y = 3) (h3 : z = 4) (h4 : w = 5) :
+    ((x + y) + z) + w = 14 := by
+  rw [h1, h2, h3, h4]
+  norm_num
   done
 
 /-!
@@ -166,4 +209,12 @@ example (w : ℤ) (h1 : x + y = z) (h2 : y + w = 4) :
   have h3 : z + w = x + 4 := by
     sorry
   sorry
+  done
+
+teacher_only in
+example (w : ℤ) (h1 : x + y = z) (h2 : y + w = 4) :
+    (z + w) + (z + w) = (x + 4) + (x + 4) := by
+  have h3 : z + w = x + 4 := by
+    rw [←h1, add_assoc, h2]
+  rw [h3]
   done

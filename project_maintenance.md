@@ -16,11 +16,9 @@ Open <http://localhost:8000>. The first build compiles Verso and can take a whil
 For the ordinary course library build, use `lake build`.
 
 Write course explanations in module comments (`/-! ... -/`) alongside the Lean
-code in `Cx2026Groups/`. Import each new week in `Cx2026Groups.lean` so it is
-included in the course library and website. The overview in `Cx2026Groups.lean`
-is the home page. Edit `literate.toml` to set page titles and navigation order;
-new course modules are included automatically. Only the student course library is
-published, so teacher files, Mathlib, and Lean dependency sources are not rendered as course pages.
+code in `Cx2026GroupsTeacher/`. The generated overview in `Cx2026Groups.lean`
+is the home page. Set page titles in `literate-teacher.toml` and regenerate
+before building the public site. The public site renders the Student library.
 See the [Verso literate programming guide](https://verso.lean-lang.org/doc/latest/)
 for additional rendering options.
 
@@ -34,27 +32,90 @@ GitHub Pages. Set **Settings → Pages → Build and deployment → Source** to
 
 ## Student and teacher versions
 
-Student lessons live in `Cx2026Groups/`; matching teacher lessons live in
-`Cx2026GroupsTeacher/`. They started as identical copies. Edit teacher files as
-your authoring originals, then manually copy and adapt lessons for students.
-The overview files import their own library's lessons. When adding a lesson,
-add its import to the corresponding overview and set its title and navigation
-order in the rendering configurations. Keep student files independent of teacher
-imports. If both versions define named declarations that might be imported
-together, use distinct namespaces for those declarations.
+Edit `Cx2026GroupsTeacher.lean` and the lessons in `Cx2026GroupsTeacher/`.
+Write each exercise with its Student scaffold, including any `sorry`s, then put
+the worked proof immediately below it as a separate example. Add
+`meta import Cx2026GroupsAuthoring` to a lesson that uses the marker.
 
-`lakefile.toml` registers both libraries, but the default target remains the
-student library. To check the teacher files explicitly:
+```lean
+example (n : ℕ) : n = n := by
+  sorry
+
+teacher_only in
+example (n : ℕ) : n = n := by
+  rfl
+```
+
+`teacher_only in` wraps one top-level command. Lean checks the command in the
+Teacher build. The exporter removes its source lines, including a trailing
+`--` comment. Keep shared comments on separate lines outside the wrapper.
+The same wrapper works for commands such as `#print Group` and `#import_bumps`.
+List imports used only by Teacher commands in `student.exclude_imports` in
+`literate-teacher.toml`. The list matches exact module names, including imports
+written with `meta`, `public`, or `all`. If both editions define named
+declarations, keep their imports separate to avoid name collisions.
+
+Add new lessons to the Teacher week overview, and import each week in
+`Cx2026GroupsTeacher.lean`. Set the module's title under its Teacher name in
+`literate-teacher.toml`. When a week is ready for students, add its name to
+`student.released_modules` in that file. The exporter uses this list for the
+Student files, overview imports, and site configuration. It renames course
+imports to their Student counterparts and reports any dependency from a
+released lesson on an unreleased module.
+
+Generate and check the Student files from the repository root:
 
 ```sh
+lake exe generateStudent
+lake exe generateStudent --check
+lake build
 lake build Cx2026GroupsTeacher
 ```
 
-CI checks both libraries. The public website still uses `literate.toml`, which
-selects only `Cx2026Groups`, and is built with `lake build :literateHtml`.
-Teacher files retain their Verso markup and options so they can also be rendered.
-Files committed to a public repository are accessible there even if they are
-excluded from the public website.
+For repeated exports, build the executable once with `lake build generateStudent`
+and run `.lake/build/bin/generateStudent` from the project root. This skips the
+outer Lake invocation. The executable still asks Lake to check its dependencies.
+Rebuild the executable after changing the exporter or toolchain.
+
+The exporter caches validated lesson edits in `.lake/build/student-export.json`.
+Changes to lesson source, module setup, or compiled imports invalidate the relevant
+entries. The exporter fingerprints Lake-tracked artifacts by their file stamps
+when their hash sidecars are current. Otherwise it hashes the artifact contents.
+`--check` still compares the generated text with the Student files on every run.
+
+Commit the generated `Cx2026Groups.lean`, `Cx2026Groups/`, and `literate.toml`
+with their authoring changes. CI compares the checked-in files against a fresh
+export and builds both libraries. Generation removes stale files carrying the
+generator's header. It reports unexpected Student files without that header so
+they can be moved to the Teacher tree before regenerating.
+
+The `[student]` table sets the public overview title and command visibility.
+Both sites get lesson titles from the Teacher module entries, with the Student
+module names derived automatically. Files committed to a public repository are
+accessible there even if the public website excludes them.
+
+### Reusing the exporter in another Lake project
+
+Copy `GenerateStudent.lean` and the module that defines `teacher_only in`.
+Register the `generateStudent` executable with `supportInterpreter = true`, and
+register the source, destination, and marker libraries in Lake. The exporter
+uses the usual layout where `Notes.Teacher` lives in `Notes/Teacher.lean` and
+its submodules live under `Notes/Teacher/`.
+
+```toml
+[student]
+teacher_root = "Notes.Teacher"
+student_root = "Notes.Student"
+released_modules = ["Algebra.Groups"]
+exclude_imports = ["Notes.Authoring"]
+```
+
+Run `lake exe generateStudent --config student-export.toml`. Release entries are
+relative to the Teacher root and include their submodules. Omit `released_modules`
+to export the entire Teacher tree. The root module is always exported.
+Omit `site_config` for a Lean-only export. For a Verso site, set it to the output
+TOML path and include the site metadata and Student display settings as shown in
+`literate-teacher.toml`.
 
 To render both libraries together locally:
 
@@ -63,18 +124,17 @@ python3 scripts/build_teacher_site.py
 python3 -m http.server 8001 --bind 127.0.0.1 --directory .lake/build/literate-html-teacher
 ```
 
-Open <http://localhost:8001>. `literate-teacher.toml` selects both libraries,
-with separate Student notes and Teacher notes navigation branches. Update its
-titles and ordering alongside `literate.toml` when adding lessons. The preview
-server can remain running while you rebuild; refresh the browser afterwards.
+Open <http://localhost:8001>. The combined site has separate Student notes and
+Teacher notes navigation branches. Run the Student export before rebuilding
+the preview after edits. The preview server can remain running while you
+rebuild. Refresh the browser afterwards.
 
-The pinned Verso package facet hardcodes `literate.toml` and its output path.
-Our Python helper instead calls the pinned planner, builds the planned modules'
-`literate` facets, and invokes the HTML renderer with the combined configuration.
-It discovers source files under the two standard library roots. It renders to a
-temporary directory and replaces `.lake/build/literate-html-teacher` only after
-success, clearing obsolete pages. It does not change the student configuration
-or the public site's output. No dependency sources are patched.
+The pinned Verso package facet uses `literate.toml` for the public site. The
+Python preview helper asks the Lean exporter to write a temporary combined
+configuration, calls the pinned planner, builds the planned modules'
+`literate` facets, and invokes the HTML renderer. It renders to a temporary
+directory and replaces `.lake/build/literate-html-teacher` after a successful
+render, clearing obsolete pages.
 
 Codespaces setup continues to fetch only student imports. If teacher files gain
 additional Mathlib imports, optionally fetch their cached artifacts before building:
@@ -85,6 +145,44 @@ python3 .devcontainer/fetch_mathlib_cache.py --teacher
 
 When upgrading Verso, check both site commands: the helper relies on the pinned
 planner/renderer command interfaces and module-map format.
+
+## Restricting exercise proofs
+
+Add `meta import Cx2026GroupsTools` to the lesson. Use `NewTactic` and
+`NewTheorem` as you introduce tactics and results. Enable checking for a group
+of exercises with `set_option course.checkProofs true` inside a section.
+
+```lean
+NewTactic exact
+NewTheorem Nat.zero_add
+
+section
+set_option course.checkProofs true
+
+example (n : Nat) : 0 + n = n := by
+  exact Nat.zero_add n
+
+end
+```
+
+Entries accumulate for later proofs in the file and in modules that import it.
+Use `local NewTactic` or `local NewTheorem` to limit an entry to the enclosing
+section or namespace. For example, put `local NewTactic sorry` in a section
+around an unfinished exercise and remove it when checking completed submissions.
+Quote symbolic tactic names such as `"·"` or `"<;>"`.
+
+The tactic whitelist covers written tactics, including nested `by` blocks. The
+theorem whitelist covers references in the elaborated proof, including results
+inserted by tactics. A few standard equality combinators used by `rw` and `calc`
+are always available. Automatic checking is off by default. With the option off,
+use `course_proof =>` to check one proof, or use
+`course_proof tactics [...] theorems [...] =>` to supply explicit lists.
+
+Keep the options and whitelist entries fixed when checking submissions, and
+require `by` blocks for exercises that use automatic checking. A direct proof
+term such as `:= Nat.zero_add n` falls outside the automatic check. The checker
+trusts the listed results, and a proof by reduction can pass without referencing
+the named theorem.
 
 ## Temporary Verso backport
 

@@ -1,7 +1,8 @@
-import Cx2026GroupsTeacher.Week1_0
-import Cx2026GroupsTeacher.Week1_1
-import Cx2026GroupsTeacher.Week1_2
-import Cx2026GroupsTeacher.Week1_3
+import Cx2026GroupsTeacher.Week1
+import Cx2026GroupsTeacher.Week2
+import Cx2026GroupsTeacher.Week3
+import Cx2026GroupsTeacher.Week4
+import Cx2026GroupsTeacher.Week5
 
 set_option doc.verso.module true
 
@@ -35,7 +36,7 @@ By the end of this project, you will be able to:
 * Use Lean tactics to modify proof goals. Explain the effect of Lean tactics on proof goals. These
   tactics include
     * The {tactic}`rw` tactic for rewriting a target or hypothesis using a theorem.
-    * The {tactic}`apply` tactic for applying a theorem or hypothesis in a situation where its
+    * The {lit}`apply` tactic for applying a theorem or hypothesis in a situation where its
     conclusion matches the target.
     * The {tactic}`simp` tactic for automatically applying rewrite rules.
     * The {tactic}`show` tactic to re-express the target in a definitionally equivalent form.
