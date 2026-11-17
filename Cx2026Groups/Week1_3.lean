@@ -29,7 +29,7 @@ set_option linter.unusedTactic false
 variable (x y z : ℤ)
 
 /-!
-The same proof can be written in Lean as follows. The {tactic}`have` tactic is explained below. 
+The same proof can be written in Lean as follows. The {tactic}`have` tactic is explained below.
 -/
 
 example (h1 : x = 5 * y) (h2 : y = 2) : 3 * x - 4 * y = 22 := by
@@ -74,10 +74,13 @@ Complete the proof below.
 
 example (h1 : x = 50) (h2 : y = 2 * x - 70) : 5 * y - 3 * x = 0 := by
   have h3 : 3 * x = 150 := by
-    sorry
+    rw[h1]
+    norm_num
   have h4 : 5 * y = 150 := by
-    sorry
-  sorry
+    rw[h2,h1]
+    norm_num
+  rw[h3,h4]
+  norm_num
   done
 
 /-!
@@ -105,8 +108,8 @@ Complete the auxiliary fact, then use `add_assoc` and `h3` to finish the main pr
 
 example (h1 : y = 4) (h2 : z = 5) : (x + y) + z = x + 9 := by
   have h3 : y + z = 9 := by
-    sorry
-  sorry
+    rw[h1,h2]
+  rw[add_assoc]
   done
 
 /-!
@@ -164,4 +167,3 @@ example (w : ℤ) (h1 : x + y = z) (h2 : y + w = 4) :
     sorry
   sorry
   done
-

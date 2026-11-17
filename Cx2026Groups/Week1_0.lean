@@ -6,6 +6,7 @@ set_option doc.verso.suggestions false
 /-!
 # Getting started with GitHub Codespaces
 
+
 GitHub Codespaces gives you VS Code in a browser, with Lean running on a remote
 computer. You need a GitHub account and an internet connection; the project
 installs Lean and its dependencies for you.
