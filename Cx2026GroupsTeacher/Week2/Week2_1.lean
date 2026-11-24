@@ -133,6 +133,10 @@ example : (x * g) * g⁻¹ = x := by
     _ = x := by rw [mul_one]
   done
 
+/-!
+
+-/
+
 lemma inv_mul_cancel_right : (x * g⁻¹) * g = x := by
   calc
     (x * g⁻¹) * g = sorry := by sorry

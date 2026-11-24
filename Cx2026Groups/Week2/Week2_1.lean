@@ -99,6 +99,10 @@ lemma mul_inv_cancel_right : (x * g) * g⁻¹ = x := by
 
 NewTheorem cx_2026.mul_inv_cancel_right
 
+/-!
+
+-/
+
 lemma inv_mul_cancel_right : (x * g⁻¹) * g = x := by
   calc
     (x * g⁻¹) * g = sorry := by sorry

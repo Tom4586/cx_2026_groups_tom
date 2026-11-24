@@ -2,8 +2,6 @@
 import Cx2026Groups.Week1
 import Cx2026Groups.Week2
 import Cx2026Groups.Week3
-import Cx2026Groups.Week4
-import Cx2026Groups.Week5
 
 set_option doc.verso.module true
 

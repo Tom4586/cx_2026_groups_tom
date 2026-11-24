@@ -5,6 +5,7 @@ Authors: Gihan Marasingha
 -/
 
 import Cx2026GroupsTeacher.Week3.Week3_0
+import Cx2026GroupsTeacher.Week3.Week3_1
 
 set_option doc.verso.module true
 
@@ -12,6 +13,7 @@ set_option doc.verso.module true
 # Week 3
 
 Learn how subgroups inherit the group operations and how to use their
-closure properties in Lean. The multiples of 3 modulo 12 will be our running
-example for the rest of the course.
+closure properties in Lean. Then build the intersection of two subgroups and
+prove that it is the largest subgroup contained in both. The multiples of 3
+modulo 12 will be our running example for the rest of the course.
 -/

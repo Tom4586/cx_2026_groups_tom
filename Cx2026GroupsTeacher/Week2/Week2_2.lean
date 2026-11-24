@@ -15,39 +15,23 @@ set_option doc.verso.module true
 set_option doc.verso.suggestions false
 
 /-!
-# Orders of elements
+# Cancellation and using hypotheses
 
-Recall that if $`g` is an element of a group $`G`, then the order of $`g` (where it is defined) is
-the smallest positive integer $`n` such that $`g ^ n = 1` (where I use $`1` to denote the identity
-element in the group).
+In this file, we'll look at further cancellation results and see how use theorems that require a
+hypothesis.
 
-In Mathlib, if there is no positive integer $`n` such that $`g ^ n = 1`, then the order of $`n` is
-defined to be $`0`.
+## Cancellation
 
-The order of `g` is denoted `orderOf g` in Mathlib.
+You will prove the familiar left and right cancellation results for groups.
 -/
 
 namespace cx_2026
 
-variable {G : Type*} [Group G] {x y z : G}
-
-/-!
-For example, the order of the identity element is $`1`. This result is called {name}`orderOf_one` in
-Mathlib.
--/
-
-example : orderOf 1 = 1 := by
-  rw [orderOf_one]
-
-
-/-!
-
-
--/
+variable {G : Type*} [Group G] {x y z w : G}
 
 public section
 
-NewTactic intro rcases
+NewTactic apply
 
 set_option course.checkProofs true
 
@@ -84,8 +68,10 @@ Now prove the corresponding result that if `x * z = y * z`, then `x = y`.
 -/
 
 lemma mul_right_cancel (h : x * z = y * z) : x = y := by
-  calc x = sorry := by sorry
-  _ = y := sorry
+  calc
+    x = sorry := by sorry
+    _ = y := sorry
+  done
 
 NewTheorem cx_2026.mul_right_cancel
 
@@ -95,6 +81,79 @@ example (h : x * z = y * z) : x = y := by
     x = (x * z) * z⁻¹ := by rw [mul_inv_cancel_right]
     _ = (y * z) * z⁻¹ := by rw [h]
     _ = y := by rw [mul_inv_cancel_right]
+  done
+
+/-!
+## Using hypotheses
+
+The results {name}`mul_right_cancel` and {name}`mul_left_cancel` are our first examples of theorems
+with *hypotheses* / *assumptions*. For example, {name}`mul_right_cancel` states that `x = y` on the
+assumption (the hypothesis) that `x * z = y * z`.
+
+To make use of a hypothesis when proving a result, you can deploy the `apply` tactic.
+-/
+
+/-!
+In the example below, `apply mul_right_cancel h` asks Lean to match the target `a ^ 2 = b ^2` with
+the result `mul_right_cancel h2`. Here `h2 : a ^ 2 * c = b ^ 2 * c`, so `mul_right_cancel h2` is
+exactly the target.
+-/
+
+example (a b c : G) (h : a ^ 2 * c = b ^ 2 * c) : a ^ 2 = b ^ 2:= by
+  apply mul_right_cancel h
+  done
+
+/-!
+An alternative approach is to ask Lean to *partially apply* a result. Below, we prove the same
+result as above. This time, we use `apply mul_right_cancel`. This asks Lean to match the target with
+the `mul_right_cancel`. Now `mul_right_cancel` states that *given* a hypothesis `h : x * z = y * z`,
+then `x = y`.
+
+Since we haven't given a hypothesis to `apply`, it does the best job that it can and matches the
+target, `a ^ 2 = b ^ 2` with the conclusion of `mul_right_cancel` (this being `x = y`). So `apply`
+finds that it suffices to prove a target of the form `a ^ 2 * ?z = b ^ 2 * ?z`. Here `?z` represents
+some unknown quantity.
+
+We can then supply the remaining condition `a ^ 2 * ?z = b ^ 2 * ?z` using `apply h`.
+-/
+
+
+example (a b c : G) (h : a ^ 2 * c = b ^ 2 * c) : a ^ 2 = b ^ 2:= by
+  apply mul_right_cancel
+  apply h
+  done
+
+/-!
+## Exercise 2.3
+
+Prove the following. You may want to use a {tactic}`rw` tactic and an `apply` tactic
+-/
+
+example (h : x ^ 2 = w) (h2 : w * y = z * y) : x ^ 2 = z := by
+  sorry
+  done
+
+teacher_only in
+example (h : x ^ 2 = w) (h2 : w * y = z * y) : x ^ 2 = z := by
+  rw [h]
+  apply mul_right_cancel h2
+  done
+
+/-!
+## Exercise 2.4
+
+Prove the following. This is a little tricky but can can be done entirely using the `apply` tactic.
+-/
+
+example (a : G) (h2 : a * y * x ^ 2 = a * z ^ 2 * x ^ 2) : y = z ^ 2 := by
+  sorry
+  done
+
+teacher_only in
+example (a : G) (h2 : a * y * x ^ 2 = a * z ^ 2 * x ^ 2) : y = z ^ 2 := by
+  apply mul_left_cancel
+  apply mul_right_cancel h2
+  done
 
 end
 

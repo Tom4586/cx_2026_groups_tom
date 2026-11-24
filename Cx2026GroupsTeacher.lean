@@ -3,6 +3,7 @@ import Cx2026GroupsTeacher.Week2
 import Cx2026GroupsTeacher.Week3
 import Cx2026GroupsTeacher.Week4
 import Cx2026GroupsTeacher.Week5
+import Cx2026GroupsTeacher.Week6
 
 set_option doc.verso.module true
 

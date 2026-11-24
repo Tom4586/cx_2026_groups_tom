@@ -51,11 +51,18 @@ By the end of this project, you will be able to:
 ## Maintaining this project
 
 Author lessons in `Cx2026GroupsTeacher/`. Run `lake exe generateStudent` to
-update the Student files and public Verso configuration.
-To build a local website containing both versions, run
-`python3 scripts/build_teacher_site.py`, then preview it with
-`python3 -m http.server 8001 --bind 127.0.0.1 --directory .lake/build/literate-html-teacher`.
-Open <http://localhost:8001>.
+update the Student files and public Verso configuration. Equally run the script
+`scripts/generateStudent`.
+
+
+To build a local website containing both versions, run the script `scripts/build_teacher_site.py` or
+run `scripts/build_student-site` to build a local website for just the student version.
+
+You can run a server for the student version by running `scripts/preview-student` and a server for
+both versions using `script/preview-teacher`.
+
+The student version runs on <http://localhost:8000> while the teacher version runs on
+<http://localhost:8001>.
 
 See [Project maintenance](project_maintenance.md) for the authoring workflow
 and instructions for upgrading Lean, Mathlib, and Verso.

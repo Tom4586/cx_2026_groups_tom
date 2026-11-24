@@ -17,6 +17,24 @@ set_option doc.verso.suggestions false
 /-!
 # Lagrange's theorem
 
+MY THOUGHTS:
+
+The setup is that $`G` is a finite group and that $`H` is a subgroup of $`G`.
+
+What I need to prove is that all cosets of $`H`have the same size (i.e. there is a bijection between
+cosets) and (in particular) that each coset has the same size as $`H`.
+
+I also need to show that the cosets of $`H` form a partition of $`G`. From this it follows (why)
+that the size of $`G` is the sum of the sizes of the cosets.
+
+But the sum of the sizes of the cosets is the size of one coset times the number of cosets (as they
+all have the same size). This gives Lagrange's theorem.
+-/
+
+/-!
+
+Prior material:
+
 Let $`G` be a finite group and $`H` a subgroup. The distinct left cosets of $`H`
 partition $`G`, and each coset has $`|H|` elements. If $`[G:H]` denotes the number
 of left cosets, then $`|G|=[G:H]\,|H|`. In particular, $`|H|` divides $`|G|`.

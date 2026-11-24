@@ -19,10 +19,10 @@ teacher_root = "Cx2026GroupsTeacher"
 student_root = "Cx2026Groups"
 exclude_imports = ["Cx2026GroupsAuthoring", "Mathlib.Tactic.Linter.MinImports"]
 # Publish these Teacher week modules and their lessons in the Student edition.
-released_modules = ["Week1", "Week2"]
+released_modules = ["Week1", "Week2", "Week3"]
 site_config = "literate.toml"
 overview_title = "Course overview"
-hide_commands = ["import", "#min_imports", "set_option"]
+hide_commands = ["import", "#min_imports", "set_option", "#import_bumps", "namespace", "section", "NewTactic", "NewTheorem", "public section", "end"]
 
 [modules."Cx2026Groups"]
 title = "Student notes"
@@ -55,11 +55,17 @@ title = "Week 2.0: Group properties"
 [modules."Cx2026GroupsTeacher.Week2.Week2_1"]
 title = "Week 2.1: Further group results"
 
+[modules."Cx2026GroupsTeacher.Week2.Week2_2"]
+title = "Week 2.2: Cancellation and using hypotheses"
+
 [modules."Cx2026GroupsTeacher.Week3"]
 title = "Week 3"
 
 [modules."Cx2026GroupsTeacher.Week3.Week3_0"]
 title = "Week 3.0: Subgroups and membership"
+
+[modules."Cx2026GroupsTeacher.Week3.Week3_1"]
+title = "Week 3.1: Intersections of subgroups"
 
 [modules."Cx2026GroupsTeacher.Week4"]
 title = "Week 4"
@@ -75,3 +81,9 @@ title = "Week 5"
 
 [modules."Cx2026GroupsTeacher.Week5.Week5_0"]
 title = "Week 5.0: Lagrange's theorem"
+
+[modules."Cx2026GroupsTeacher.Week6"]
+title = "Week 6"
+
+[modules."Cx2026GroupsTeacher.Week6.Week2_3"]
+title = "Orders of elements"

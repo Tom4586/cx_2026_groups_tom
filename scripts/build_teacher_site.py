@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Build a local student-and-teacher site using the pinned Verso executables.
 
 Run from any directory: python3 /path/to/project/scripts/build_teacher_site.py
